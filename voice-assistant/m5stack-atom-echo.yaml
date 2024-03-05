@@ -88,11 +88,11 @@ voice_assistant:
         effect: none
     - homeassistant.service:
         service: tts.speak
-        target:
-          entity_id: tts.home_assistant_cloud
         data_template:
           media_player_entity_id: media_player.audio
           message: "{{my_tts}}"
+        target:
+          entity_id: tts.home_assistant_cloud
         variables:
           my_tts: return x;
   on_end:
