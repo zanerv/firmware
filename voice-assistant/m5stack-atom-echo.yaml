@@ -49,17 +49,17 @@ microphone:
     adc_type: external
     pdm: true
 
-speaker:
-  - platform: i2s_audio
-    id: echo_speaker
-    i2s_dout_pin: GPIO22
-    dac_type: external
-    mode: mono
+#speaker:
+#  - platform: i2s_audio
+#    id: echo_speaker
+#    i2s_dout_pin: GPIO22
+#    dac_type: external
+#    mode: mono
 
 voice_assistant:
   id: va
   microphone: echo_microphone
-  speaker: echo_speaker
+#  speaker: echo_speaker
   noise_suppression_level: 2
   auto_gain: 31dBFS
   volume_multiplier: 2.0
@@ -86,11 +86,20 @@ voice_assistant:
         green: 0%
         brightness: 100%
         effect: none
+    - homeassistant.service:
+        service: tts.speak
+        target:
+          entity_id: tts.home_assistant_cloud
+        data_template:
+          media_player_entity_id: media_player.audio
+          message: "{{my_tts}}"
+        variables:
+          my_tts: return x;
   on_end:
     - delay: 100ms
-    - wait_until:
-        not:
-          speaker.is_playing:
+ #   - wait_until:
+ #       not:
+ #         speaker.is_playing:
     - script.execute: reset_led
   on_error:
     - light.turn_on:
